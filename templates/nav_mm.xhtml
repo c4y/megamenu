@@ -14,7 +14,7 @@
     </script>
 <?php endif; ?>
 
-<ul class="<?php echo $this->level; ?>">
+<ul <?php if ($this->moomenu_aktiv && $this->level == "level_1") echo $this->id; ?>class="<?php echo $this->level; ?>">
 <?php foreach ($this->items as $item): ?>
 <?php if ($item['isActive']): ?>
 <li class="active<?php if ($item['class']): ?> <?php echo $item['class']; ?><?php endif; ?>"><span class="active<?php if ($item['class']): ?> <?php echo $item['class']; ?><?php endif; ?>"><?php echo $item['link']; ?></span><?php if ($item['megamenu']): ?><div <?php if($item['megamenu_id']): ?>id="<?php echo $item['megamenu_id']; ?>" <?php endif; ?>class="submenu<?php echo $item['megamenu_class']; ?>"><?php echo $item['megamenu_article']; ?></div><?php else: ?><?php echo $item['subitems']; ?><?php endif; ?></li>

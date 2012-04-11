@@ -25,7 +25,6 @@ var MooMenu = new Class({
 
   Implements : Options,
     options: {
-        element : 'mainnav',
         mode : 'drop',  // or 'fade'
         MooIn : 'bounce:out',
         MooOut : 'circ:out',
@@ -36,8 +35,7 @@ var MooMenu = new Class({
   initialize: function(options){
     this.setOptions(options);
     var id = $(this.options.element);
-    var ul = id.getElement('ul');
-    this.elements = ul.getElements('li.submenu');
+      this.elements = $(id).getElements('li.submenu');
     this.attach(this.options.mode, this.options.MooIn, this.options.MooOut, this.options.durationin, this.options.durationout);
   },
 
@@ -47,18 +45,27 @@ var MooMenu = new Class({
         if (element.getElement('div')) obj=element.getElement('div'); else obj=element.getElement('ul');
         if (mode == 'drop') {
             var div = new Element('div').wraps(obj);
+            div.addClass('wrapper');
             obj.setStyle('top', -obj.offsetHeight);
+            div.setStyle('height', obj.offsetHeight);
+            div.setStyle('width', obj.offsetWidth);
         } else {
-            obj.addClass('fade');
+           obj.set('opacity', 0);
+           obj.addClass('fade');
         }
+        var aktiv = false;
         element.addEvents({
             mouseenter: function(e){
                 switch (mode) {
                   case 'drop' :
-                        div.addClass('drop');
-                        obj
-                         .set('tween',{ transition: MooIn, duration: durationin })
-                         .tween('top', 0);
+                        if (!this.aktiv)
+                        {
+                            this.aktiv = true;
+                            div.addClass('drop');
+                            obj
+                             .set('tween',{ transition: MooIn, duration: durationin })
+                             .tween('top', 0);
+                        }
                         break;
                   case 'fade' :
                   		obj.setStyle('opacity', 0);
@@ -71,13 +78,17 @@ var MooMenu = new Class({
             mouseleave: function(e){
                 switch (mode) {
                 case ('drop') :
-                        var myFx = new Fx.Tween (obj, { transition: MooOut,
-                                    duration: durationout,
-                                    property:'top'
-                                  });
-                        myFx.start(-obj.offsetHeight).chain(function(){
-                            div.removeClass('drop');
-                        });
+                        if (this.aktiv)
+                        {
+                            var myFx = new Fx.Tween (obj, { transition: MooOut,
+                                        duration: durationout,
+                                        property:'top'
+                                      });
+                            myFx.start(-obj.offsetHeight).chain(function(){
+                                div.removeClass('drop');
+                            });
+                            this.aktiv = false;
+                        }
                      break;
                 case ('fade') :
                     obj.setStyle('opacity', 1);

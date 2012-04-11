@@ -32,6 +32,9 @@
  
 class ModuleMegaMenu extends ModuleNavigation
 {
+
+    protected $strTemplate = 'mod_navigation_mm';
+
     /**
 	 * Recursively compile the navigation menu and return it as HTML string
 	 * @param integer
@@ -78,12 +81,14 @@ class ModuleMegaMenu extends ModuleNavigation
 		$objTemplate->moduleid = $this->Template->id;
 
 		$objTemplate->moomenu_aktiv = $this->Template->moomenu_aktiv;
-		$objTemplate->moomenu_id = $this->Template->moomenu_id;
+		//$objTemplate->moomenu_id = $this->Template->moomenu_id;
+        $objTemplate->moomenu_id = "mm_" . $this->id;
 		$objTemplate->moomenu_mode = $this->Template->moomenu_mode;
 		$objTemplate->moomenu_durationin = $this->Template->moomenu_durationin;
 		$objTemplate->moomenu_durationout = $this->Template->moomenu_durationout;
 		$objTemplate->moomenu_mooin = $this->Template->moomenu_mooin;
 		$objTemplate->moomenu_mooout = $this->Template->moomenu_mooout;
+        $objTemplate->id = 'id="mm_' . $this->id . '" ';
 
 		// Get page object
 		global $objPage;
