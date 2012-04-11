@@ -29,7 +29,7 @@ CSS - Fade
 Bei der Fade-Animation wird dem 'div' bzw. 'ul' die Klasse .fade mitgegeben. Zum Ausblenden der Animation muss hier
 wie beim 'li:hover div' der left oder right - Wert zugewiesen werden. Beispiel:
 
-#mainnav ul li div.fade { left:0; }
+    #mainnav ul li div.fade { left:0; }
 
 CSS - Drop-Down
 ---------------
