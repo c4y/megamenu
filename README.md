@@ -37,16 +37,16 @@ CSS - Drop-Down
 Hier wird als "Submenu" ein zuvor angelegter und in der Seitenstruktur ausgewählter Artikel in einem 'div' dargestellt.
 Dieser kann einfach wie ein normales Drop-Down-Menü behandelt werden.
 
-#mainnav li.submenu div.submenu {
-  position:absolute;
-  left:-9999px;
-  top: 35px;
-  width: 500px;
-}
+    #mainnav li.submenu div.submenu {
+       position:absolute;
+       left:-9999px;
+       top: 35px;
+       width: 500px;
+    }
 
-#mainnav li.submenu div.submenu {
-  left:0;
-}
+    #mainnav li.submenu div.submenu {
+       left:0;
+    }
 
 usw.
 
@@ -56,18 +56,18 @@ bekommt dieser 'div' noch die Klasse '.drop'.
 
 Aus den o.a. CSS wird dann:
 
-#mainnav li.submenu div.submenu,
-#mainnav li.submenu div.wrapper {
-  position:absolute;
-  left:-9999px;
-  top: 35px;
-  width: 500px;
-  overflow:hidden;
-}
+    #mainnav li.submenu div.submenu,
+    #mainnav li.submenu div.wrapper {
+      position:absolute;
+      left:-9999px;
+      top: 35px;
+      width: 500px;
+      overflow:hidden;
+    }
 
-#mainnav li.submenu div.submenu,
-#mainnav div.drop,
-#mainnav div.drop div.submenu {
-  left:0;
-}
+    #mainnav li.submenu div.submenu,
+    #mainnav div.drop,
+    #mainnav div.drop div.submenu {
+      left:0;
+    }
 
