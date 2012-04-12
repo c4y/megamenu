@@ -33,8 +33,6 @@
 class ModuleMegaMenu extends ModuleNavigation
 {
 
-    protected $strTemplate = 'mod_navigation_mm';
-
     /**
 	 * Recursively compile the navigation menu and return it as HTML string
 	 * @param integer

@@ -69,6 +69,7 @@ var MooMenu = new Class({
                         break;
                   case 'fade' :
                   		obj.setStyle('opacity', 0);
+                  		obj.setStyle('visibility', 'visible');
                         obj
                           .set('tween', { transition: MooIn, duration: durationin })
                           .tween('opacity', 1);

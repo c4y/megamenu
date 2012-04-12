@@ -31,7 +31,7 @@
 
 array_insert($GLOBALS['TL_DCA']['tl_module']['palettes']['__selector__'],0, 'moomenu_aktiv');
 $GLOBALS['TL_DCA']['tl_module']['palettes']['megamenu'] = '{title_legend},name,headline,type;{nav_legend},levelOffset,showLevel,hardLimit,showProtected;{moomenu_legend:hide},moomenu_aktiv;{reference_legend:hide},defineRoot;{template_legend:hide},navigationTpl;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
-$GLOBALS['TL_DCA']['tl_module']['subpalettes']['moomenu_aktiv'] = 'moomenu_mode, moomenu_id, moomenu_mooin, moomenu_mooout, moomenu_durationin, moomenu_durationout';
+$GLOBALS['TL_DCA']['tl_module']['subpalettes']['moomenu_aktiv'] = 'moomenu_mode, moomenu_mooin, moomenu_mooout, moomenu_durationin, moomenu_durationout';
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['navigationTpl']['default'] = 'nav_mm';
 array_insert($GLOBALS['TL_DCA']['tl_module']['fields'], 0, array
