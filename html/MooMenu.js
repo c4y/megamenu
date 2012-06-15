@@ -96,6 +96,7 @@ var MooMenu = new Class({
                     obj
                       .set('tween', { transition: MooOut, duration: durationout})
                       .tween('opacity', 0);
+                    obj.setStyle('visibility', 'hidden');
                     break;
                 }
             }
