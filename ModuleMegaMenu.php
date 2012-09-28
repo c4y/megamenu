@@ -174,7 +174,7 @@ class ModuleMegaMenu extends ModuleNavigation
 					$row['description'] = str_replace(array("\n", "\r"), array(' ' , ''), $objSubpages->description);
                     // = $getArticle (id, false, false, column?);
                     $row['megamenu'] = $objSubpages->megamenu;
-                    $row['megamenu_article'] = $this->getArticle($objSubpages->mm_article, true, true, $objSubpages->mm_col);
+                    $row['megamenu_article'] = $objSubpages->megamenu ? $this->getArticle($objSubpages->mm_article, true, true, $objSubpages->mm_col) : '';
                     //$arrCSS = deserialize($objSubpages->mm_cssID, false);
                     $row['megamenu_id'] = $arrCSS[0];
                     $row['megamenu_class'] = ($arrCSS[1] != '') ? ' ' . $arrCSS[1] : '';
@@ -207,7 +207,7 @@ class ModuleMegaMenu extends ModuleNavigation
 					$row['target'] = (($objSubpages->type == 'redirect' && $objSubpages->target) ? LINK_NEW_WINDOW : '');
 					$row['description'] = str_replace(array("\n", "\r"), array(' ' , ''), $objSubpages->description);
                     $row['megamenu'] = $objSubpages->megamenu;
-                    $row['megamenu_article'] = $this->getArticle($objSubpages->mm_article, false, true, $objSubpages->mm_col);
+                    $row['megamenu_article'] = $objSubpages->megamenu ? $this->getArticle($objSubpages->mm_article, false, true, $objSubpages->mm_col) : '';
                     //$arrCSS = deserialize($objSubpages->mm_cssID, false);
                     $row['megamenu_id'] = $arrCSS[0];
                     $row['megamenu_class'] = ($arrCSS[1] != '') ? ' ' . $arrCSS[1] : '';
