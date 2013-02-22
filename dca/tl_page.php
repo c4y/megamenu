@@ -43,7 +43,8 @@ $GLOBALS['TL_DCA']['tl_page']['fields']['megamenu'] = array
             'label'     => &$GLOBALS['TL_LANG']['tl_page']['megamenu'],
             'exclude'   => false,
             'inputType' => 'checkbox',
-            'eval'  => array('mandatory'=>false, 'isBoolean'=>true, 'submitOnChange'=>true)
+            'eval'      => array('mandatory'=>false, 'isBoolean'=>true, 'submitOnChange'=>true),
+            'sql'       => "char(1) NOT NULL default ''"
         );
 $GLOBALS['TL_DCA']['tl_page']['fields']['mm_article'] = array
         (
@@ -52,31 +53,35 @@ $GLOBALS['TL_DCA']['tl_page']['fields']['mm_article'] = array
             'inputType'               => 'select',
 			'options_callback'        => array('ModuleMenuArticles', 'getArticles'),
 			'eval'                    => array('mandatory'=>true, 'submitOnChange'=>true),
-			'wizard' => array
+			'wizard'    => array
 			(
 				array('ModuleMenuArticles', 'editArticle')
-			)
+			),
+            'sql'       => "int(10) unsigned NOT NULL default '0'"
         );
 $GLOBALS['TL_DCA']['tl_page']['fields']['mm_col'] = array
         (
             'label'     => &$GLOBALS['TL_LANG']['tl_page']['mm_col'],
             'exclude'   => false,
             'inputType' => 'text',
-            'eval'      => array('mandatory'=>false, 'maxlength'=>255, 'decodeEntities'=>true)
+            'eval'      => array('mandatory'=>false, 'maxlength'=>255, 'decodeEntities'=>true),
+            'sql'       => "varchar(255) NOT NULL default ''"
         );
 $GLOBALS['TL_DCA']['tl_page']['fields']['mm_cssID'] = array
         (
             'label'     => &$GLOBALS['TL_LANG']['tl_page']['mm_cssID'],
             'exclude'   => true,
             'inputType' => 'text',
-			'eval'                    => array('multiple'=>true, 'size'=>2)
+			'eval'      => array('multiple'=>true, 'size'=>2),
+            'sql'       => "varchar(255) NOT NULL default ''"
         );
 $GLOBALS['TL_DCA']['tl_page']['fields']['noLink'] = array
         (
             'label'     => &$GLOBALS['TL_LANG']['tl_page']['noLink'],
             'exclude'   => false,
             'inputType' => 'checkbox',
-            'eval'  => array('mandatory'=>false, 'isBoolean'=>true)
+            'eval'      => array('mandatory'=>false, 'isBoolean'=>true),
+            'sql'       => "char(1) NOT NULL default ''"
         );
 
 ?>

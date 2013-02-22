@@ -1,4 +1,4 @@
-<?php if (!defined('TL_ROOT')) die('You cannot access this file directly!');
+<?php
 
 $GLOBALS['TL_LANG']['tl_module']['moomenu_aktiv'] = array('MooMenu.', "Activate MooMenu. You can animate CSS-DropDown Menus.");
 $GLOBALS['TL_LANG']['tl_module']['moomenu_mode'] = array ('Mode', 'Drop or Fade.');
@@ -9,5 +9,3 @@ $GLOBALS['TL_LANG']['tl_module']['moomenu_durationin'] = array ('Duration In (ms
 $GLOBALS['TL_LANG']['tl_module']['moomenu_durationout'] = array ('Duration Out (ms)', 'Time in ms for the Transition Out');
 
 $GLOBALS['TL_LANG']['tl_module']['moomenu_legend'] = 'MooMenu - Animation';
-
-?>

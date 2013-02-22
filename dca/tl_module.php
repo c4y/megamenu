@@ -41,14 +41,16 @@ array_insert($GLOBALS['TL_DCA']['tl_module']['fields'], 0, array
 				'label'                   => &$GLOBALS['TL_LANG']['tl_module']['moomenu_aktiv'],
 				'exclude'                 => true,
 				'inputType'               => 'checkbox',
-				'eval'                    => array('submitOnChange'=>true, 'isBoolean'=>true, 'mandatory'=>false)
+				'eval'                    => array('submitOnChange'=>true, 'isBoolean'=>true, 'mandatory'=>false),
+                'sql'                     => "char(1) NOT NULL default ''"
 			),
 		'moomenu_id' => array
 			(
 				'label'                   => &$GLOBALS['TL_LANG']['tl_module']['moomenu_id'],
 				'exclude'                 => true,
 				'inputType'               => 'text',
-				'eval'                    => array('mandatory'=>true, 'maxlength'=>255, 'tl_class' =>'w50')
+				'eval'                    => array('mandatory'=>true, 'maxlength'=>255, 'tl_class' =>'w50'),
+                'sql'                     => "varchar(255) NOT NULL default ''"
 			),
 	    'moomenu_mode' => array
 			(
@@ -56,7 +58,8 @@ array_insert($GLOBALS['TL_DCA']['tl_module']['fields'], 0, array
 				'exclude'                 => true,
 				'inputType'               => 'select',
 		        'options'                 => array('fade', 'drop'),
-				'eval'                    => array('mandatory'=>true, 'maxlength'=>255, 'tl_class' =>'w50')
+				'eval'                    => array('mandatory'=>true, 'maxlength'=>255, 'tl_class' =>'w50'),
+                'sql'                     => "varchar(255) NOT NULL default ''"
 			),
 		'moomenu_durationin' => array
 			(
@@ -64,7 +67,8 @@ array_insert($GLOBALS['TL_DCA']['tl_module']['fields'], 0, array
 				'exclude'                 => true,
 				'inputType'               => 'text',
 				'default'                 => '1000',
-				'eval'                    => array('mandatory'=>true, 'maxlength'=>255, 'tl_class'=>'w50')
+				'eval'                    => array('mandatory'=>true, 'maxlength'=>255, 'tl_class'=>'w50'),
+                'sql'                     => "varchar(255) NOT NULL default ''"
 			),
 		'moomenu_durationout' => array
 			(
@@ -72,23 +76,26 @@ array_insert($GLOBALS['TL_DCA']['tl_module']['fields'], 0, array
 				'exclude'                 => true,
 				'inputType'               => 'text',
 				'default'                 => '200',
-				'eval'                    => array('mandatory'=>true, 'maxlength'=>255, 'tl_class'=>'w50')
-			),
+				'eval'                    => array('mandatory'=>true, 'maxlength'=>255, 'tl_class'=>'w50'),
+                'sql'                     => "varchar(255) NOT NULL default ''"
+        ),
 		'moomenu_mooin' => array
 			(
 				'label'                   => &$GLOBALS['TL_LANG']['tl_module']['moomenu_mooin'],
 				'exclude'                 => true,
 				'inputType'               => 'select',
 				'options'                 => array('linear','cubin:in', 'cubic:out', 'quart:in', 'quart:out', 'quint:in', 'quint:out', 'expo:in', 'expo:out', 'circ:in', 'circ:out', 'bounce:in', 'bounce:out', 'elastic:in', 'elastic:out'),
-				'eval'                    => array('mandatory'=>true, 'maxlength'=>255, 'tl_class'=>'w50')
-			),
+				'eval'                    => array('mandatory'=>true, 'maxlength'=>255, 'tl_class'=>'w50'),
+                'sql'                     => "varchar(255) NOT NULL default ''"
+        ),
 		'moomenu_mooout' => array
 			(
 				'label'                   => &$GLOBALS['TL_LANG']['tl_module']['moomenu_mooout'],
 				'exclude'                 => true,
 				'inputType'               => 'select',
 				'options'                 => array('linear','cubin:in', 'cubic:out', 'quart:in', 'quart:out', 'quint:in', 'quint:out', 'expo:in', 'expo:out', 'circ:in', 'circ:out', 'bounce:in', 'bounce:out', 'elastic:in', 'elastic:out'),
-				'eval'                    => array('mandatory'=>true, 'maxlength'=>255, 'tl_class'=>'w50')
+				'eval'                    => array('mandatory'=>true, 'maxlength'=>255, 'tl_class'=>'w50'),
+                'sql'                     => "varchar(255) NOT NULL default ''"
 			)
 	)
 );
