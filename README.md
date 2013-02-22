@@ -3,6 +3,9 @@ Contao - Erweiterung megamenu
 
 Changelog
 ---------
+Version 2
+ * Anpassungen für Contao 3
+
 Version 1.3
  * unnötige (doppelte) Angabe der ID im Modul entfernt
  * Animationen angepasst und optimiert
