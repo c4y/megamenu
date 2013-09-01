@@ -3,6 +3,13 @@ Contao - Erweiterung megamenu
 
 Changelog
 ---------
+Version 2.1
+ * Anpassungen an Contao 3.1
+ * Umstellung auf TinyDropdown (http://www.scriptiny.com/2011/04/javascript-dropdown-menu/)
+ * JS Animation ohne jQuery / Mootools lauffähig
+ * Standard CSS mitgeliefert (abschaltbar)
+ * Änderungen am Template (das DIV des Megamenu wird jetzt von einem ul/li umschlossen, das li mit dem Megamenu hat die Klasse megamenu statt submenu)
+
 Version 2
  * Anpassungen für Contao 3
 
@@ -16,61 +23,11 @@ Anleitung
 ---------
 
 1. Modul Megamenu anlegen / Template nav_mm
-2. MooMenu für Fade oder Drop-Down Animation einstellen
+2. Im Modul Fade/Slide einstellen (auf Wunsch - geht auch ohne)
 3. Einen Artikel anlegen, der als Megamenü dargestellt wird. Pro dargestelltem Menüpunkt ist ein Artikel notwendig.
 4. In der Seitenstruktur für den jeweiligen Menüpunkt das Megamenü aktivieren und den zugehörigen Artikel auswählen
 5. Das Ganze per CSS stylen
 
 CSS - Tipps
 -----------
-Bei der Animation wird zwischen Fade und Drop-Down unterschieden.
-
-
-CSS - Fade
------------
-
-Bei der Fade-Animation wird dem 'div' bzw. 'ul' die Klasse .fade mitgegeben. Zum Ausblenden der Animation muss hier
-wie beim 'li:hover div' der left oder right - Wert zugewiesen werden. Beispiel:
-
-    #mainnav ul li div.fade { left:0; }
-
-CSS - Drop-Down
----------------
-
-Hier wird als "Submenu" ein zuvor angelegter und in der Seitenstruktur ausgewählter Artikel in einem 'div' dargestellt.
-Dieser kann einfach wie ein normales Drop-Down-Menü behandelt werden.
-
-    #mainnav li.submenu div.submenu {
-       position:absolute;
-       left:-9999px;
-       top: 35px;
-       width: 500px;
-    }
-
-    #mainnav li.submenu div.submenu {
-       left:0;
-    }
-
-usw.
-
-Wenn die Animation im Modul 'MooMenu' aktiviert wird, gibt es ein paar Dinge zu beachten.
-Der Artikel wird von einem weiteren 'div' mit der Klasse '.wrapper' umschlossen. Während der Animation
-bekommt dieser 'div' noch die Klasse '.drop'.
-
-Aus den o.a. CSS wird dann:
-
-    #mainnav li.submenu div.submenu,
-    #mainnav li.submenu div.wrapper {
-      position:absolute;
-      left:-9999px;
-      top: 35px;
-      width: 500px;
-      overflow:hidden;
-    }
-
-    #mainnav li.submenu div.submenu,
-    #mainnav div.drop,
-    #mainnav div.drop div.submenu {
-      left:0;
-    }
-
+Eine Basis-CSS wird mitgeliefert

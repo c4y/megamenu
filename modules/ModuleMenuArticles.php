@@ -6,8 +6,9 @@
  * Wrap an article into a navigation
  *
  * PHP version 5
- * @copyright  contao4you | Oliver Lohoff 2011
+ * @copyright  contao4you | Oliver Lohoff 2013
  * @author     Oliver Lohoff <info@contao4you.de>
+ * @package    megamenu
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 

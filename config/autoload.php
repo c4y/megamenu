@@ -23,5 +23,6 @@ ClassLoader::addClasses(array
  */
 TemplateLoader::addFiles(array
 (
-	'nav_mm'        => 'system/modules/megamenu/templates'
+	'nav_mm'        => 'system/modules/megamenu/templates',
+    'nav_mm_css'        => 'system/modules/megamenu/templates'
 ));

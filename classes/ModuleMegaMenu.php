@@ -6,8 +6,9 @@
  * Wrap an article into a navigation
  *
  * PHP version 5
- * @copyright  contao4you | Oliver Lohoff 2011
+ * @copyright  contao4you | Oliver Lohoff 2013
  * @author     Oliver Lohoff <info@contao4you.de>
+ * @package    megamenu
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
@@ -22,16 +23,12 @@ class ModuleMegaMenu extends \ModuleNavigation
 	 * @param integer
 	 * @return string
 	 */
-	 
-	protected function renderNavigation($pid, $level=1)
+	protected function renderNavigation($pid, $level=1, $host=null, $language=null)
 	{
-		$time = time();
-
 		// Get all active subpages
-		$objSubpages = \Database::getInstance()->prepare("SELECT p1.*, (SELECT COUNT(*) FROM tl_page p2 WHERE p2.pid=p1.id AND p2.type!='root' AND p2.type!='error_403' AND p2.type!='error_404'" . (!$this->showHidden ? (($this instanceof ModuleSitemap) ? " AND (p2.hide!=1 OR sitemap='map_always')" : " AND p2.hide!=1") : "") . ((FE_USER_LOGGED_IN && !BE_USER_LOGGED_IN) ? " AND p2.guests!=1" : "") . (!BE_USER_LOGGED_IN ? " AND (p2.start='' OR p2.start<".$time.") AND (p2.stop='' OR p2.stop>".$time.") AND p2.published=1" : "") . ") AS subpages FROM tl_page p1 WHERE p1.pid=? AND p1.type!='root' AND p1.type!='error_403' AND p1.type!='error_404'" . (!$this->showHidden ? (($this instanceof ModuleSitemap) ? " AND (p1.hide!=1 OR sitemap='map_always')" : " AND p1.hide!=1") : "") . ((FE_USER_LOGGED_IN && !BE_USER_LOGGED_IN) ? " AND p1.guests!=1" : "") . (!BE_USER_LOGGED_IN ? " AND (p1.start='' OR p1.start<".$time.") AND (p1.stop='' OR p1.stop>".$time.") AND p1.published=1" : "") . " ORDER BY p1.sorting")
-									  ->execute($pid);
+		$objSubpages = \PageModel::findPublishedSubpagesWithoutGuestsByPid($pid, $this->showHidden, $this instanceof \ModuleSitemap);
 
-		if ($objSubpages->numRows < 1)
+		if ($objSubpages === null)
 		{
 			return '';
 		}
@@ -47,38 +44,45 @@ class ModuleMegaMenu extends \ModuleNavigation
 		}
 
 		// Layout template fallback
-		if (!strlen($this->navigationTpl))
+		if ($this->navigationTpl == '')
 		{
-			$this->navigationTpl = 'nav_mm';
+			$this->navigationTpl = 'nav_default';
 		}
 
 		$objTemplate = new \FrontendTemplate($this->navigationTpl);
-		//$this->Template->cssID = strlen($this->cssID[0]) ? ' id="' . $this->cssID[0] . '"' : '';
-		//$this->Template->cssID = strlen($this->cssID[0]) ? ' id="' . $this->cssID[0] . ' moomenu' . $this->Template->id . '"' : 'moomenu';
-		//$this->Template->cssID = "test";
 
 		$objTemplate->type = get_class($this);
+		$objTemplate->cssID = $this->cssID; // see #4897
 		$objTemplate->level = 'level_' . $level++;
-		$objTemplate->moduleid = $this->Template->id;
 
-		$objTemplate->moomenu_aktiv = $this->Template->moomenu_aktiv;
-		//$objTemplate->moomenu_id = $this->Template->moomenu_id;
+        /***************************************
+         * Megamenu (Start)
+         ***************************************/
+        $objTemplate->moomenu_pageid = $this->Template->moomenu_id;
+        $objTemplate->moomenu_aktiv = $this->Template->moomenu_aktiv;
+		$objTemplate->moomenu_activestate = $this->Template->moomenu_activestate;
+		$objTemplate->moomenu_fade = ($this->Template->moomenu_fade) ? "true" : "false";
+		$objTemplate->moomenu_slide = ($this->Template->moomenu_slide) ? "true" : "false";
+		$objTemplate->moomenu_speed = $this->Template->moomenu_speed;
+		$objTemplate->moomenu_timeout = $this->Template->moomenu_timeout;
         $objTemplate->moomenu_id = "mm_" . $this->id;
-		$objTemplate->moomenu_mode = $this->Template->moomenu_mode;
-		$objTemplate->moomenu_durationin = $this->Template->moomenu_durationin;
-		$objTemplate->moomenu_durationout = $this->Template->moomenu_durationout;
-		$objTemplate->moomenu_mooin = $this->Template->moomenu_mooin;
-		$objTemplate->moomenu_mooout = $this->Template->moomenu_mooout;
         $objTemplate->id = 'id="mm_' . $this->id . '" ';
+        if ($this->Template->moomenu_css) {
+            $objCSS = new \FrontendTemplate("nav_mm_css");
+            $GLOBALS['TL_HEAD'][] = $objCSS->parse();
+        }
+        /***************************************
+         * Megamenu (Ende)
+         ***************************************/
 
 		// Get page object
 		global $objPage;
 
 		// Browse subpages
-		while($objSubpages->next())
+		while ($objSubpages->next())
 		{
 			// Skip hidden sitemap pages
-			if ($this instanceof ModuleSitemap && $objSubpages->sitemap == 'map_never')
+			if ($this instanceof \ModuleSitemap && $objSubpages->sitemap == 'map_never')
 			{
 				continue;
 			}
@@ -86,13 +90,19 @@ class ModuleMegaMenu extends \ModuleNavigation
 			$subitems = '';
 			$_groups = deserialize($objSubpages->groups);
 
+			// Override the domain (see #3765)
+			if ($host !== null)
+			{
+				$objSubpages->domain = $host;
+			}
+
 			// Do not show protected pages unless a back end or front end user is logged in
-			if (!$objSubpages->protected || BE_USER_LOGGED_IN || (is_array($_groups) && count(array_intersect($_groups, $groups))) || $this->showProtected || ($this instanceof ModuleSitemap && $objSubpages->sitemap == 'map_always'))
+			if (!$objSubpages->protected || BE_USER_LOGGED_IN || (is_array($_groups) && count(array_intersect($_groups, $groups))) || $this->showProtected || ($this instanceof \ModuleSitemap && $objSubpages->sitemap == 'map_always'))
 			{
 				// Check whether there will be subpages
-				if ($objSubpages->subpages > 0 && (!$this->showLevel || $this->showLevel >= $level || (!$this->hardLimit && ($objPage->id == $objSubpages->id || in_array($objPage->id, $this->getChildRecords($objSubpages->id, 'tl_page', true))))))
+				if ($objSubpages->subpages > 0 && (!$this->showLevel || $this->showLevel >= $level || (!$this->hardLimit && ($objPage->id == $objSubpages->id || in_array($objPage->id, $this->Database->getChildRecords($objSubpages->id, 'tl_page'))))))
 				{
-					$subitems = $this->renderNavigation($objSubpages->id, $level);
+					$subitems = $this->renderNavigation($objSubpages->id, $level, $host, $language);
 				}
 
 				// Get href
@@ -103,48 +113,60 @@ class ModuleMegaMenu extends \ModuleNavigation
 
 						if (strncasecmp($href, 'mailto:', 7) === 0)
 						{
-							$this->import('String');
-							$href = $this->String->encodeEmail($href);
+							$href = \String::encodeEmail($href);
 						}
 						break;
 
 					case 'forward':
-						if (!$objSubpages->jumpTo)
+						if ($objSubpages->jumpTo)
 						{
-							$objNext = $this->Database->prepare("SELECT id, alias FROM tl_page WHERE pid=? AND type='regular'" . (!BE_USER_LOGGED_IN ? " AND (start='' OR start<$time) AND (stop='' OR stop>$time) AND published=1" : "") . " ORDER BY sorting")
-													  ->limit(1)
-													  ->execute($objSubpages->id);
+							$objNext = $objSubpages->getRelated('jumpTo');
 						}
 						else
 						{
-							$objNext = $this->Database->prepare("SELECT id, alias FROM tl_page WHERE id=?")
-													  ->limit(1)
-													  ->execute($objSubpages->jumpTo);
+							$objNext = \PageModel::findFirstPublishedRegularByPid($objSubpages->id);
 						}
 
-						if ($objNext->numRows)
+						if ($objNext !== null)
 						{
-							$href = $this->generateFrontendUrl($objNext->fetchAssoc());
+							$strForceLang = null;
+							$objNext->loadDetails();
+
+							// Check the target page language (see #4706)
+							if ($GLOBALS['TL_CONFIG']['addLanguageToUrl'])
+							{
+								$strForceLang = $objNext->language;
+							}
+
+							$href = $this->generateFrontendUrl($objNext->row(), null, $strForceLang);
+
+							// Add the domain if it differs from the current one (see #3765)
+							if ($objNext->domain != '' && $objNext->domain != \Environment::get('host'))
+							{
+								$href = (\Environment::get('ssl') ? 'https://' : 'http://') . $objNext->domain . TL_PATH . '/' . $href;
+							}
 							break;
 						}
 						// DO NOT ADD A break; STATEMENT
 
 					default:
-						$href = $this->generateFrontendUrl($objSubpages->row());
+						$href = $this->generateFrontendUrl($objSubpages->row(), null, $language);
+
+						// Add the domain if it differs from the current one (see #3765)
+						if ($objSubpages->domain != '' && $objSubpages->domain != \Environment::get('host'))
+						{
+							$href = (\Environment::get('ssl') ? 'https://' : 'http://') . $objSubpages->domain . TL_PATH . '/' . $href;
+						}
 						break;
 				}
 
-				$arrCSS = deserialize($objSubpages->mm_cssID, false);
-
 				// Active page
-				if (($objPage->id == $objSubpages->id || $objSubpages->type == 'forward' && $objPage->id == $objSubpages->jumpTo) && !$this instanceof ModuleSitemap && !$this->Input->get('articles'))
+				if (($objPage->id == $objSubpages->id || $objSubpages->type == 'forward' && $objPage->id == $objSubpages->jumpTo) && !$this instanceof \ModuleSitemap && !\Input::get('articles'))
 				{
-					// original
-					$strClass = (($subitems != '' || $objSubpages->megamenu) ? 'submenu' : '') . ($objSubpages->protected ? ' protected' : '') . (($objSubpages->cssClass != '') ? ' ' . $objSubpages->cssClass : '');
-					//if ($arrCSS[1] != '') $strClass = $strClass . ' ' . $arrCSS[1];
-
+					// Mark active forward pages (see #4822)
+					$strClass = (($objSubpages->type == 'forward' && $objPage->id == $objSubpages->jumpTo) ? 'forward' . (in_array($objSubpages->id, $objPage->trail) ? ' trail' : '') : 'active') . (($subitems != '') ? ' submenu' : '') . ($objSubpages->protected ? ' protected' : '') . (($objSubpages->cssClass != '') ? ' ' . $objSubpages->cssClass : '');
 					$row = $objSubpages->row();
-					
+
 					$row['isActive'] = true;
 					$row['subitems'] = $subitems;
 					$row['class'] = trim($strClass);
@@ -153,14 +175,26 @@ class ModuleMegaMenu extends \ModuleNavigation
 					$row['link'] = $objSubpages->title;
 					$row['href'] = $href;
 					$row['nofollow'] = (strncmp($objSubpages->robots, 'noindex', 7) === 0);
-					$row['target'] = (($objSubpages->type == 'redirect' && $objSubpages->target) ? LINK_NEW_WINDOW : '');
+					$row['target'] = '';
 					$row['description'] = str_replace(array("\n", "\r"), array(' ' , ''), $objSubpages->description);
-                    // = $getArticle (id, false, false, column?);
+
+                    /***************************************
+                     * Megamenu (Start)
+                     ***************************************/
                     $row['megamenu'] = $objSubpages->megamenu;
                     $row['megamenu_article'] = $objSubpages->megamenu ? $this->getArticle($objSubpages->mm_article, true, true, $objSubpages->mm_col) : '';
                     //$arrCSS = deserialize($objSubpages->mm_cssID, false);
                     $row['megamenu_id'] = $arrCSS[0];
                     $row['megamenu_class'] = ($arrCSS[1] != '') ? ' ' . $arrCSS[1] : '';
+                    /***************************************
+                     * Megamenu (Ende)
+                     ***************************************/
+
+					// Override the link target
+					if ($objSubpages->type == 'redirect' && $objSubpages->target)
+					{
+						$row['target'] = ($objPage->outputFormat == 'xhtml') ? ' onclick="return !window.open(this.href)"' : ' target="_blank"';
+					}
 
 					$items[] = $row;
 				}
@@ -168,8 +202,7 @@ class ModuleMegaMenu extends \ModuleNavigation
 				// Regular page
 				else
 				{
-					$strClass = (($subitems != '' || $objSubpages->megamenu) ? 'submenu' : '') . ($objSubpages->protected ? ' protected' : '') . (($objSubpages->cssClass != '') ? ' ' . $objSubpages->cssClass : '') . (in_array($objSubpages->id, $objPage->trail) ? ' trail' : '');
-					//if ($arrCSS[1] != '') $strClass .= ' ' . $arrCSS[1];
+					$strClass = (($subitems != '') ? 'submenu' : '') . ($objSubpages->protected ? ' protected' : '') . (in_array($objSubpages->id, $objPage->trail) ? ' trail' : '') . (($objSubpages->cssClass != '') ? ' ' . $objSubpages->cssClass : '');
 
 					// Mark pages on the same level (see #2419)
 					if ($objSubpages->pid == $objPage->pid)
@@ -187,20 +220,33 @@ class ModuleMegaMenu extends \ModuleNavigation
 					$row['link'] = $objSubpages->title;
 					$row['href'] = $href;
 					$row['nofollow'] = (strncmp($objSubpages->robots, 'noindex', 7) === 0);
-					$row['target'] = (($objSubpages->type == 'redirect' && $objSubpages->target) ? LINK_NEW_WINDOW : '');
+					$row['target'] = '';
 					$row['description'] = str_replace(array("\n", "\r"), array(' ' , ''), $objSubpages->description);
+
+                    /***************************************
+                     * Megamenu (Start)
+                     ***************************************/
                     $row['megamenu'] = $objSubpages->megamenu;
                     $row['megamenu_article'] = $objSubpages->megamenu ? $this->getArticle($objSubpages->mm_article, false, true, $objSubpages->mm_col) : '';
-                    //$arrCSS = deserialize($objSubpages->mm_cssID, false);
                     $row['megamenu_id'] = $arrCSS[0];
                     $row['megamenu_class'] = ($arrCSS[1] != '') ? ' ' . $arrCSS[1] : '';
+                    /***************************************
+                     * Megamenu (Ende)
+                     ***************************************/
+
+					// Override the link target
+					if ($objSubpages->type == 'redirect' && $objSubpages->target)
+					{
+						$row['target'] = ($objPage->outputFormat == 'xhtml') ? ' onclick="return !window.open(this.href)"' : ' target="_blank"';
+					}
+
 					$items[] = $row;
 				}
 			}
 		}
 
 		// Add classes first and last
-		if (count($items))
+		if (!empty($items))
 		{
 			$last = count($items) - 1;
 
@@ -209,6 +255,9 @@ class ModuleMegaMenu extends \ModuleNavigation
 		}
 
 		$objTemplate->items = $items;
-		return count($items) ? $objTemplate->parse() : '';
+		return !empty($items) ? $objTemplate->parse() : '';
 	}
+
+
+
 }

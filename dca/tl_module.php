@@ -1,4 +1,4 @@
-<?php if(!defined('TL_ROOT')) die('You can not access this file directly!');
+<?php
 
 /**
  * Contao Open Source CMS
@@ -24,14 +24,15 @@
  * Wrap an article into a navigation
  *
  * PHP version 5
- * @copyright  contao4you | Oliver Lohoff 2011
+ * @copyright  contao4you | Oliver Lohoff 2013
  * @author     Oliver Lohoff <info@contao4you.de>
+ * @package    megamenu
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
 array_insert($GLOBALS['TL_DCA']['tl_module']['palettes']['__selector__'],0, 'moomenu_aktiv');
 $GLOBALS['TL_DCA']['tl_module']['palettes']['megamenu'] = '{title_legend},name,headline,type;{nav_legend},levelOffset,showLevel,hardLimit,showProtected;{moomenu_legend:hide},moomenu_aktiv;{reference_legend:hide},defineRoot;{template_legend:hide},navigationTpl;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
-$GLOBALS['TL_DCA']['tl_module']['subpalettes']['moomenu_aktiv'] = 'moomenu_mode, moomenu_mooin, moomenu_mooout, moomenu_durationin, moomenu_durationout';
+$GLOBALS['TL_DCA']['tl_module']['subpalettes']['moomenu_aktiv'] = 'moomenu_activestate, moomenu_timeout, moomenu_speed, moomenu_slide, moomenu_fade, , ,moomenu_css';
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['navigationTpl']['default'] = 'nav_mm';
 array_insert($GLOBALS['TL_DCA']['tl_module']['fields'], 0, array
@@ -44,63 +45,56 @@ array_insert($GLOBALS['TL_DCA']['tl_module']['fields'], 0, array
 				'eval'                    => array('submitOnChange'=>true, 'isBoolean'=>true, 'mandatory'=>false),
                 'sql'                     => "char(1) NOT NULL default ''"
 			),
-		'moomenu_id' => array
+        'moomenu_activestate' => array
 			(
-				'label'                   => &$GLOBALS['TL_LANG']['tl_module']['moomenu_id'],
+				'label'                   => &$GLOBALS['TL_LANG']['tl_module']['moomenu_activestate'],
 				'exclude'                 => true,
 				'inputType'               => 'text',
-				'eval'                    => array('mandatory'=>true, 'maxlength'=>255, 'tl_class' =>'w50'),
+				'eval'                    => array('maxlength'=>255, 'tl_class' =>'w50'),
                 'sql'                     => "varchar(255) NOT NULL default ''"
 			),
-	    'moomenu_mode' => array
+	    'moomenu_slide' => array
 			(
-				'label'                   => &$GLOBALS['TL_LANG']['tl_module']['moomenu_mode'],
+				'label'                   => &$GLOBALS['TL_LANG']['tl_module']['moomenu_slide'],
+				'exclude'                 => true,
+				'inputType'               => 'checkbox',
+				'eval'                    => array('tl_class' =>'w50'),
+                'sql'                     => "char(1) NOT NULL default ''"
+			),
+		'moomenu_fade' => array
+			(
+				'label'                   => &$GLOBALS['TL_LANG']['tl_module']['moomenu_fade'],
+				'exclude'                 => true,
+				'inputType'               => 'checkbox',
+				'eval'                    => array('tl_class'=>'w50'),
+                'sql'                     => "char(1) NOT NULL default ''"
+			),
+		'moomenu_speed' => array
+			(
+				'label'                   => &$GLOBALS['TL_LANG']['tl_module']['moomenu_speed'],
 				'exclude'                 => true,
 				'inputType'               => 'select',
-		        'options'                 => array('fade', 'drop'),
-				'eval'                    => array('mandatory'=>true, 'maxlength'=>255, 'tl_class' =>'w50'),
-                'sql'                     => "varchar(255) NOT NULL default ''"
-			),
-		'moomenu_durationin' => array
+				'options'                 => array("1","2","3","4","5","6","7","8","9"),
+                'default'                 => "5",
+				'eval'                    => array('tl_class'=>'clr'),
+                'sql'                     => "char(1) NOT NULL default ''"
+        ),
+		'moomenu_timeout' => array
 			(
-				'label'                   => &$GLOBALS['TL_LANG']['tl_module']['moomenu_durationin'],
+				'label'                   => &$GLOBALS['TL_LANG']['tl_module']['moomenu_timeout'],
 				'exclude'                 => true,
 				'inputType'               => 'text',
-				'default'                 => '1000',
-				'eval'                    => array('mandatory'=>true, 'maxlength'=>255, 'tl_class'=>'w50'),
-                'sql'                     => "varchar(255) NOT NULL default ''"
-			),
-		'moomenu_durationout' => array
-			(
-				'label'                   => &$GLOBALS['TL_LANG']['tl_module']['moomenu_durationout'],
-				'exclude'                 => true,
-				'inputType'               => 'text',
-				'default'                 => '200',
+                'default'                 => 200,
 				'eval'                    => array('mandatory'=>true, 'maxlength'=>255, 'tl_class'=>'w50'),
                 'sql'                     => "varchar(255) NOT NULL default ''"
         ),
-		'moomenu_mooin' => array
+        'moomenu_css' => array
 			(
-				'label'                   => &$GLOBALS['TL_LANG']['tl_module']['moomenu_mooin'],
+				'label'                   => &$GLOBALS['TL_LANG']['tl_module']['moomenu_css'],
 				'exclude'                 => true,
-				'inputType'               => 'select',
-				'options'                 => array('linear','cubin:in', 'cubic:out', 'quart:in', 'quart:out', 'quint:in', 'quint:out', 'expo:in', 'expo:out', 'circ:in', 'circ:out', 'bounce:in', 'bounce:out', 'elastic:in', 'elastic:out'),
-				'eval'                    => array('mandatory'=>true, 'maxlength'=>255, 'tl_class'=>'w50'),
-                'sql'                     => "varchar(255) NOT NULL default ''"
-        ),
-		'moomenu_mooout' => array
-			(
-				'label'                   => &$GLOBALS['TL_LANG']['tl_module']['moomenu_mooout'],
-				'exclude'                 => true,
-				'inputType'               => 'select',
-				'options'                 => array('linear','cubin:in', 'cubic:out', 'quart:in', 'quart:out', 'quint:in', 'quint:out', 'expo:in', 'expo:out', 'circ:in', 'circ:out', 'bounce:in', 'bounce:out', 'elastic:in', 'elastic:out'),
-				'eval'                    => array('mandatory'=>true, 'maxlength'=>255, 'tl_class'=>'w50'),
-                'sql'                     => "varchar(255) NOT NULL default ''"
-			)
+				'inputType'               => 'checkbox',
+				'eval'                    => array('tl_class'=>'w50'),
+                'sql'                     => "char(1) NOT NULL default ''"
+        )
 	)
 );
-
-
-
-
-?>

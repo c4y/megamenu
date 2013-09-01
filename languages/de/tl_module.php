@@ -1,11 +1,11 @@
 <?php
 
-$GLOBALS['TL_LANG']['tl_module']['moomenu_aktiv'] = array('MooMenu.', "Aktivieren von MooMenu. Per CSS gestylte DropDown-Menüs werden animiert.");
-$GLOBALS['TL_LANG']['tl_module']['moomenu_mode'] = array ('Modus', 'Drop oder Fade. Selbsterklärend');
-$GLOBALS['TL_LANG']['tl_module']['moomenu_id'] = array ('CSS-ID', 'Unten im Modul muss eine ID vergeben werden. Die gleiche ID muss in dieses Feld.');
-$GLOBALS['TL_LANG']['tl_module']['moomenu_mooin'] = array ('Einblend-Effekt', 'Der Mootools Transition Effekt beim Einblenden');
-$GLOBALS['TL_LANG']['tl_module']['moomenu_mooout'] = array ('Ausblend-Effekt', 'Der Mootools Transition Effekt beim Ausblenden');
-$GLOBALS['TL_LANG']['tl_module']['moomenu_durationin'] = array ('Zeit in ms für das Einblenden', 'Zeit in ms für das Einblenden');
-$GLOBALS['TL_LANG']['tl_module']['moomenu_durationout'] = array ('Zeit in ms für das Ausblenden', 'Zeit in ms für das Ausblenden');
+$GLOBALS['TL_LANG']['tl_module']['moomenu_aktiv'] = array('Megemanu JS Animation.', "Aktivieren von Javascript Animationen.");
+$GLOBALS['TL_LANG']['tl_module']['moomenu_activestate'] = array ('CSS Aktiv Klasse', 'Das aktive li-Element bekommt diese CSS-Klasse');
+$GLOBALS['TL_LANG']['tl_module']['moomenu_timeout'] = array ('Timeout', 'Zeit in ms, bevor das Submenu wieder verschwindet.');
+$GLOBALS['TL_LANG']['tl_module']['moomenu_speed'] = array ('Geschwindigkeit', '1 = sehr schnell, 9 = sehr langsam');
+$GLOBALS['TL_LANG']['tl_module']['moomenu_fade'] = array ('Fade', 'Fade in/out aktivieren');
+$GLOBALS['TL_LANG']['tl_module']['moomenu_slide'] = array ('Slide', 'Slide aktivieren');
+$GLOBALS['TL_LANG']['tl_module']['moomenu_css'] = array ('Standard CSS laden', 'Standard CSS laden');
 
-$GLOBALS['TL_LANG']['tl_module']['moomenu_legend'] = 'MooMenu - Animation';
+$GLOBALS['TL_LANG']['tl_module']['moomenu_legend'] = 'Megamenu - Einstellungen';

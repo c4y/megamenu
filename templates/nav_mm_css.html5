@@ -1,0 +1,27 @@
+<style type="text/css" media="screen">
+<!--/*--><![CDATA[/*><!--*/
+
+* {margin:0; padding:0; outline:0}
+.mod_megamenu {height:36px; background:#aaa; color:#fff; text-shadow:1px 1px #888; z-index:1000; overflow:visible;}
+.mod_megamenu ul a {float:left; color:#eee; text-decoration:none; width:120px; height:28px; padding-top:8px}
+.mod_megamenu ul span {float:left; color:#eee; text-decoration:none; width:120px; height:28px; padding-top:8px}
+.mod_megamenu ul a:hover {color:#fff}
+.mod_megamenu ul {list-style:none; font:16px Arial,Verdana; text-align:center; width:600px; margin:0 auto}
+.mod_megamenu ul li {position:relative; float:left; width:120px; z-index:1000}
+.mod_megamenu ul ul {width: auto; position:absolute; font:normal 13px Arial,Verdana; top:36px; left:0; background:#aaa; display:none; list-style:none}
+.mod_megamenu ul ul li {float:none; border-top:1px solid #ccc; width:120px}
+.mod_megamenu ul ul li a, li.menuhover li a, li.menuhover li.menuhover li a {float:none; display:block; background:none; height:22px; padding-top:5px}
+.mod_megamenu ul ul li a:hover, li.menuhover li a:hover, li.menuhover li.menuhover li a:hover {background:#999; color:#fff}
+.mod_megamenu ul ul li span, li.menuhover li span, li.menuhover li.menuhover li span {float:none; display:block; background:none; height:22px; padding-top:5px}
+.mod_megamenu ul ul ul {left:120px; top:0}
+.mod_megamenu ul li.submenu {font-weight:bold}
+.mod_megamenu ul li.noborder {border-top:none}
+li.menuhover a, li.menuhover li.menuhover a {color:#fff; background:#999}
+li.menuhover span, li.menuhover li.menuhover span {color:#fff; background:#999}
+.mod_megamenu ul.megamenu,
+.mod_megamenu ul.megamenu li,
+.mod_megamenu div { height: 150px; width: 200px;}
+.mod_megamenu ul ul span { width: 100%; }
+
+/*]]>*/-->
+</style>

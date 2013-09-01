@@ -8,4 +8,4 @@ $GLOBALS['TL_LANG']['tl_page']['mm_cssID'] = array('CSS-ID/Klasse', 'Hier könne
 $GLOBALS['TL_LANG']['tl_page']['noLink'] = array('Link entfernen', 'Entfernt den Link vom Hauptmenüpunkt.');
 
 //Legenden
-$GLOBALS['TL_LANG']['tl_page']['megamenu_legend'] = 'Mega-Menü';
+$GLOBALS['TL_LANG']['tl_page']['megamenu_legend'] = 'Megamenü';

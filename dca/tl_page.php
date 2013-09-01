@@ -1,4 +1,4 @@
-<?php if(!defined('TL_ROOT')) die('You can not access this file directly!');
+<?php
 
 /**
  * Contao Open Source CMS
@@ -26,6 +26,7 @@
  * PHP version 5
  * @copyright  contao4you | Oliver Lohoff 2011
  * @author     Oliver Lohoff <info@contao4you.de>
+ * @package    megamenu
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
@@ -36,7 +37,7 @@ $GLOBALS['TL_DCA']['tl_page']['palettes']['forward'] = str_replace('{meta_legend
 $GLOBALS['TL_DCA']['tl_page']['palettes']['redirect'] = str_replace('{meta_legend}', '{megamenu_legend:hide},megamenu,noLink;{meta_legend}', $GLOBALS['TL_DCA']['tl_page']['palettes']['redirect']);
 
 
-$GLOBALS['TL_DCA']['tl_page']['subpalettes']['megamenu'] = 'mm_article,mm_cssID';
+$GLOBALS['TL_DCA']['tl_page']['subpalettes']['megamenu'] = 'mm_article';
 
 $GLOBALS['TL_DCA']['tl_page']['fields']['megamenu'] = array
         (
@@ -83,5 +84,3 @@ $GLOBALS['TL_DCA']['tl_page']['fields']['noLink'] = array
             'eval'      => array('mandatory'=>false, 'isBoolean'=>true),
             'sql'       => "char(1) NOT NULL default ''"
         );
-
-?>
